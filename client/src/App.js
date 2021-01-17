@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import RequestUpload from './components/RequestUpload';
+import Main from './components/Main';
 import './App.css';
 
 const App = () => (
@@ -7,7 +7,7 @@ const App = () => (
     <h4 className="display-4 text-center mb-4">
       <i className="fab fa-react"></i> 失物互助
     </h4>
-    <RequestUpload />
+    <Main />
   </div>
 );
 

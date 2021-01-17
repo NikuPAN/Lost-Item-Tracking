@@ -1,8 +1,10 @@
 import React, { Fragment, useState } from 'react';
 import DateTimePicker from 'react-datetime-picker';
+import { TextArea } from '@adobe/react-spectrum';
+
 import axios from 'axios';
 
-const RequestUpload = () => {
+const ReportForm = () => {
 
 	// File Object
 	const [file, setFile] = useState('');
@@ -26,11 +28,12 @@ const RequestUpload = () => {
 	}
 
 	const onChangePhotoDesc = (e) => {
-		setPhotoDesc(e.target.value);
+		//setPhotoDesc(e.target.value);
+		setPhotoDesc(e);
 	}
 
 	const onChangeContactWay = (e) => {
-		setContactWay(e.target.value);
+		setContactWay(e);
 	}
 
 	const onChangeOption = (e) => {
@@ -85,20 +88,32 @@ const RequestUpload = () => {
         		value={dateTime}
       		/>
     		</div>
-				<div className="multiline mb-4">
-					<label htmlFor='description'>請形容這個物品: </label><br/>
-					<input type='textarea' 
+				<div>
+					<TextArea
 						id='description'
+						label='請形容這個物品:'
+						isRequired 
+						necessityIndicator='label'
 						placeholder={photoDesc}
 						onChange={onChangePhotoDesc}
+						maxLength='500'
+						width='100%'
+						height='static-size-200'
+						maxWidth='100%'
 					/>
 				</div>
-				<div className="multiline mb-4">
-					<label htmlFor='contact'>請留下聯絡方式: </label><br/>
-					<input type='textarea' 
+				<br/>
+				<div>
+					<TextArea
 						id='contact'
+						label='請留下聯絡方式:'
+						isRequired 
+						necessityIndicator='label'
 						placeholder={contactWay}
 						onChange={onChangeContactWay}
+						maxLength='500'
+						width='100%'
+						maxWidth='100%'
 					/>
 				</div>
 				<br/>
@@ -114,4 +129,4 @@ const RequestUpload = () => {
 	);
 };
 
-export default RequestUpload;
+export default ReportForm;

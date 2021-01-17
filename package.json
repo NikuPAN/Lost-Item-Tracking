@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@adobe/react-spectrum": "^3.7.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.0",
     "react-datetime-picker": "^3.0.4",
