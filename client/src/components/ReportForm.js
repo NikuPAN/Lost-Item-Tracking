@@ -2,6 +2,7 @@ import React, { Fragment, useState } from 'react';
 import DateTimePicker from 'react-datetime-picker';
 import { TextArea } from '@adobe/react-spectrum';
 import Message from './Message';
+import Progress from './Progress';
 import axios from 'axios';
 
 const ReportForm = () => {
@@ -21,7 +22,9 @@ const ReportForm = () => {
 	// Uploaded File
 	const [uploadedFile, setUploadedFile] = useState({});
 	// Message
-		const [message, setMessage] = useState('');
+	const [message, setMessage] = useState('');
+	// Upload Progress
+	const [uploadPercent, setUploadPercent] = useState(0);
 
 	// Change Function
 	const onChangeFile = (e) => {
@@ -56,7 +59,15 @@ const ReportForm = () => {
 			const res = await axios.post('/upload', formData, {
 				headers: {
 					'Content-Type': 'multiport/form-data'
+				},
+				onUploadProgress: progressEvent => {
+					setUploadPercent(parseInt(Math.round((progressEvent.loaded * 100) /
+					progressEvent.total)));
+
+					// Clear Percentage after 10s.
+					setTimeout(() => setUploadPercent(0), 5000);
 				}
+				
 			});
 			// console.log(res.data);
 			const { fileName, filePath } = res.data;
@@ -121,8 +132,11 @@ const ReportForm = () => {
 					<label className='custom-file-label' htmlFor='customFile'>
 						{fileName}
 					</label>
-					<input type='submit' value='回報' className="btn btn-primary btn-block mt-4"/>
 				</div>
+				{ uploadPercent > 0 ?
+					<Progress percentage={uploadPercent} /> 
+				: null }
+				<input type='submit' value='回報' className="btn btn-primary btn-block mt-4"/>
 			</form>
 			{ uploadedFile.fileName ? 
 				<div className='row mt-5'>

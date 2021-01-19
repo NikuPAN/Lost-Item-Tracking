@@ -1,3 +1,6 @@
+/*
+This component is to show to upload file message.
+*/
 import React from 'react'
 import PropTypes from 'prop-types'
 

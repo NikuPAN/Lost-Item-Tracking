@@ -1,10 +1,17 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 
 const ExistedReport = () => {
+
+  const [images, setImages] = useState([]);
+
   return (
     <div className="container">
-      <div className="box">
-      </div>
+      {images.map(img => (
+        <div className="box">
+          
+        </div>
+      ))}
+      
     </div>
   )
 }
