@@ -1,6 +1,21 @@
-// This is the endpoint for the backend functions, 
-// including upload and fetch data from DB.
+/* This is the endpoint with backend functions.
 
+  Functions Included:
+  1. upload(app, db);
+      - Upload an image into project directory.
+      - This is to be used with addReport function so you can add record to DB.
+      - Perhaps you can merged the function with addReport
+  2. findAllReport(app, db);
+      - Fetch all reports existing on the databse.
+  3. findReport(app, db);
+      - Fetch a specific report by using the unique id.
+  4. addReport(app, db);
+      - Add a report to the db.
+  5. editReport(app, db);
+      - Update the report detail by using the unique id.
+  6. deleteReport(app, db);
+      - Remove a specific report by using the unique id.
+*/
 class Router {
 
   constructor(app, db) {
@@ -19,7 +34,7 @@ class Router {
       if (req.files === null) {
           return res.status(400).json({
               msg: 'No file uploaded'
-          })
+          });
       }
 
       const file = req.files.file;
@@ -30,9 +45,9 @@ class Router {
               return res.status(500).send(err);
           }
 
-          res.json({ fileName: file.name, filePath: `/uploads/${file.name}` })
-      })
-    })
+          res.json({ fileName: file.name, filePath: `/uploads/${file.name}` });
+      });
+    });
   }
 
   // Fetch exist reports from DB.
@@ -44,7 +59,7 @@ class Router {
           res.json({
               success: false,
               msg: 'An error occured, please try again'
-          })
+          });
           return;
         }
         // If any record is found on the databse.
@@ -52,7 +67,7 @@ class Router {
           res.json({
               success: true,
               data: data // Return whole data object.
-          })
+          });
           return true;
         }
         // no record is found on the database.
@@ -60,7 +75,7 @@ class Router {
           res.json({
               success: false,
               msg: 'Nothing found on the db.'
-          })
+          });
         }
       });
     });
@@ -80,15 +95,15 @@ class Router {
               timestamp: data[0].timestamp,
               description: data[0].description,
               contact: data[0].contact
-          })
+          });
           return true;
         }
         // no record is found on the database with the id.
         else {
-            res.json({
-                success: false,
-                msg: 'Nothing found on the db with the id.'
-            })
+          res.json({
+              success: false,
+              msg: 'Nothing found on the db with the id.'
+          });
         }
       });
     });
@@ -116,7 +131,7 @@ class Router {
         res.json({
           success: true,
           msg: 'A record has successfully added into the databse!'
-        })
+        });
       });
     });
   }
@@ -124,14 +139,50 @@ class Router {
   // Update exist report in DB.
   editReport(app, db) {
     app.post('/editReport', (req, res) => {
-      
+      let id = req.body.id;
+      let option = req.body.option;
+      let timestamp = req.body.timestamp;
+      let description = req.body.description;
+      let contact = req.body.contact;
+
+      db.query('UPDATE item_record SET (option = ?, timestamp = ?, description = ?, contact = ?) WHERE id = ?', 
+      (option, timestamp, description, contact, id), (err, data, field) => {
+        // If there is an error.
+        if(err) {
+          res.json({
+              success: false,
+              msg: 'An error occured, please try again'
+          })
+          return;
+        }
+        // If there is no error.
+        res.json({
+          success: true,
+          msg: 'A record has been successfully updated!'
+        });
+      });
     });
   }
 
   // Delete exist report in DB.
   deleteReport(app, db) {
     app.post('/deleteReport', (req, res) => {
-
+      let id = req.body.id;
+      db.query('DELETE FROM item_record WHERE id = ?', id, (err, data, field) => {
+        // If there is an error.
+        if(err) {
+          res.json({
+              success: false,
+              msg: 'An error occured, please try again'
+          })
+          return;
+        }
+        // If there is no error.
+        res.json({
+          success: true,
+          msg: 'A record has been deleted successfully!'
+        });
+      });
     });
   }
 }

@@ -5,6 +5,8 @@ const app = express();
 const mysql = require('mysql');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
+
+// Router.js is the endpoint API with every backend functions.
 const Router = require('./Router');
 const port = 5000;
 
