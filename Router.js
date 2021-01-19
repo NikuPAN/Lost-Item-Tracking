@@ -33,7 +33,7 @@ class Router {
     app.post('/upload', (req, res) => {
       if (req.files === null) {
           return res.status(400).json({
-              msg: 'No file uploaded'
+              msg: 'No file was uploaded'
           });
       }
 
