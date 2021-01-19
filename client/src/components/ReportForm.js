@@ -49,9 +49,9 @@ const ReportForm = () => {
 		e.preventDefault();
 		const formData = new FormData();
 		formData.append('file', file);
-		formData.append('dateTime', dateTime);
-		formData.append('photoDesc', photoDesc);
-		formData.append('contactWay', contactWay);
+		// formData.append('dateTime', dateTime);
+		// formData.append('photoDesc', photoDesc);
+		// formData.append('contactWay', contactWay);
 
 		try {
 			const res = await axios.post('/upload', formData, {

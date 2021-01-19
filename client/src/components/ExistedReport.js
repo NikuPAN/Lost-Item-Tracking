@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { Component } from 'react'
 
 const ExistedReport = () => {
   return (
-    <div>
-      
+    <div className="container">
+      <div className="box">
+
+      </div>
     </div>
   )
 }
