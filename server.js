@@ -24,7 +24,7 @@ const Pool = require('pg').Pool
 const pool = new Pool({
   user: 'pt',
   host: 'socif-eta-db-master.eastasia.cloudapp.azure.com',
-  database: 'Inf',
+  database: 'lnf', // L not I..............
   password: 'socif123',
   port: 5432,
 });
@@ -33,11 +33,10 @@ const pool = new Pool({
 pool.query('SELECT * FROM item_record ORDER BY id ASC', (err, data) => {
   // If an error occured.
   if(err) {
-    console.log(err);
-    return;
+    throw err;
   }
   // If any record is found on the databse.
-  if(data && data.length > 0) { 
+  if(data && data.rows.length > 0) { 
     console.log(data.rows);
   }
   // No record is found on the database. return 404 not found.

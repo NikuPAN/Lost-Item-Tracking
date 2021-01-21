@@ -62,7 +62,7 @@ class Router {
           return;
         }
         // If any record is found on the databse.
-        if(data && data.length > 0) { 
+        if(data && data.rows.length > 0) { 
           res.status(200).json({
               // Returns whole data object in row.
               data: data.rows
@@ -92,13 +92,13 @@ class Router {
           return;
         }
         // If a record is found on the databse with the id. Return 200
-        if(data && data.length === 1) { 
+        if(data && data.rows.length === 1) { 
           res.status(200).json({
-              id: data[0].id,
-              option: data[0].option,
-              timestamp: data[0].timestamp,
-              description: data[0].description,
-              contact: data[0].contact
+              id: data.rows[0].id,
+              option: data.rows[0].option,
+              timestamp: data.rows[0].timestamp,
+              description: data.rows[0].description,
+              contact: data.rows[0].contact
           });
           return true;
         }
