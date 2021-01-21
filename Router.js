@@ -53,27 +53,25 @@ class Router {
   // Fetch exist reports from DB.
   findAllReport(app, db) {
     app.post('/findAllReport', (req, res) => {
-      db.query('SELECT * FROM item_record', (err, data, field) => {
-        // If error occured.
+      db.query('SELECT * FROM item_record ORDER BY id ASC', (err, data) => {
+        // If an error occured.
         if(err) {
-          res.json({
-              success: false,
+          res.status(err.status).json({
               msg: 'An error occured, please try again'
           });
           return;
         }
         // If any record is found on the databse.
         if(data && data.length > 0) { 
-          res.json({
-              success: true,
-              data: data // Return whole data object.
+          res.status(200).json({
+              // Returns whole data object in row.
+              data: data.rows
           });
           return true;
         }
-        // no record is found on the database.
+        // No record is found on the database. return 404 not found.
         else {
-          res.json({
-              success: false,
+          res.status(404).json({
               msg: 'Nothing found on the db.'
           });
         }
@@ -84,12 +82,18 @@ class Router {
   // Fetch an exist reports from DB with id.
   findReport(app, db) {
     app.post('/findReport', (req, res) => {
-      let id = req.body.id
-      db.query('SELECT * FROM item_record WHERE id = ? LIMIT 1', id, (err, data, field) => {
-        // If a record is found on the databse with the id.
+      let id = req.body.id;
+      db.query('SELECT * FROM item_record WHERE id = $1 LIMIT 1', [id], (err, data) => {
+        // If an error occured.
+        if(err) {
+          res.status(err.status).json({
+              msg: 'An error occured, please try again'
+          });
+          return;
+        }
+        // If a record is found on the databse with the id. Return 200
         if(data && data.length === 1) { 
-          res.json({
-              success: true,
+          res.status(200).json({
               id: data[0].id,
               option: data[0].option,
               timestamp: data[0].timestamp,
@@ -98,11 +102,10 @@ class Router {
           });
           return true;
         }
-        // no record is found on the database with the id.
+        // No record is found with the id. Return 404
         else {
-          res.json({
-              success: false,
-              msg: 'Nothing found on the db with the id.'
+          res.status(404).json({
+              msg: `Nothing found with the id: ${id}.`
           });
         }
       });
@@ -117,20 +120,19 @@ class Router {
       let description = req.body.description;
       let contact = req.body.contact;
 
-      db.query('INSERT INTO item_record (option, timestamp, description, contact) VALUES (?, ?, ?, ?)', 
-      (option, timestamp, description, contact), (err, data, field) => {
-        // If there is an error.
+      db.query('INSERT INTO item_record (option, timestamp, description, contact) VALUES ($1, $2, $3, $4)', 
+      [option, timestamp, description, contact], (err, data) => {
+        // If an error occured.
         if(err) {
-          res.json({
-              success: false,
+          res.status(err.status).json({
               msg: 'An error occured, please try again'
-          })
+          });
           return;
         }
-        // If there is no error.
-        res.json({
-          success: true,
-          msg: 'A record has successfully added into the databse!'
+        // If there is no error. Return 200 OK.
+        res.status(200).json({
+          id: data.insertId,
+          msg: `User added with ID: ${data.insertId}`
         });
       });
     });
@@ -145,20 +147,18 @@ class Router {
       let description = req.body.description;
       let contact = req.body.contact;
 
-      db.query('UPDATE item_record SET (option = ?, timestamp = ?, description = ?, contact = ?) WHERE id = ?', 
-      (option, timestamp, description, contact, id), (err, data, field) => {
-        // If there is an error.
+      db.query('UPDATE item_record SET (option = $1, timestamp = $2, description = $3, contact = $4) WHERE id = $5', 
+      [option, timestamp, description, contact, id], (err, data, field) => {
+        // If an error occured. Return error with code
         if(err) {
-          res.json({
-              success: false,
+          res.status(err.status).json({
               msg: 'An error occured, please try again'
-          })
+          });
           return;
         }
-        // If there is no error.
-        res.json({
-          success: true,
-          msg: 'A record has been successfully updated!'
+        // If there is no error. Return 200 OK.
+        res.status(200).json({
+          msg: `User modified with ID: ${id}`
         });
       });
     });
@@ -168,19 +168,17 @@ class Router {
   deleteReport(app, db) {
     app.post('/deleteReport', (req, res) => {
       let id = req.body.id;
-      db.query('DELETE FROM item_record WHERE id = ?', id, (err, data, field) => {
+      db.query('DELETE FROM item_record WHERE id = $1', [id], (err, data, field) => {
         // If there is an error.
         if(err) {
-          res.json({
-              success: false,
+          res.status(err.status).json({
               msg: 'An error occured, please try again'
           })
           return;
         }
-        // If there is no error.
-        res.json({
-          success: true,
-          msg: 'A record has been deleted successfully!'
+        // If there is no error. Return 200 OK.
+        res.status(200).json({
+          msg: `User deleted with ID: ${id}`
         });
       });
     });

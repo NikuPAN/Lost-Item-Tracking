@@ -2,9 +2,9 @@ const express = require('express');
 const fileUpload = require('express-fileupload');
 const app = express();
 // const path = require('path');
-const mysql = require('mysql');
-const session = require('express-session');
-const MySQLStore = require('express-mysql-session')(session);
+// const mysql = require('mysql');
+// const session = require('express-session');
+// const MySQLStore = require('express-mysql-session')(session);
 
 // Router.js is the endpoint API with every backend functions.
 const Router = require('./Router');
@@ -29,31 +29,22 @@ const pool = new Pool({
   port: 5432,
 })
 
-// db.connect(function(err) {
-//     if(err) {
-//         console.log('Error Establishing Connection to DB');
-//         throw err;
-//         //return false;
-//     }
-// });
-
-// const sessionStore = new MySQLStore({
-//     expiration: (1825 * 86400 * 1000),  // 5 years
-//     endCoonectionOnClose: false
-// }, db);
-
-// app.use(session({
-//     key: 'ffjnsgwnocnoVR09U42U5M82JCJIORJ2093U',
-//     secret: 'mseafij293293u3j29921U*(#@&@Y$#&@Y$114514',
-//     store: sessionStore,
-//     resave: false,
-//     saveUninitialized: false,
-//     cookie: {
-//         maxAge: (1825 * 86400 * 1000),  // 5 years
-//         httpOnly: false
-//     }
-// }));
+pool.query('SELECT * FROM item_record ORDER BY id ASC', (err, data) => {
+    // If an error occured.
+    if(err) {
+      console.log(err);
+      return;
+    }
+    // If any record is found on the databse.
+    if(data && data.length > 0) { 
+      console.log(data.rows);
+    }
+    // No record is found on the database. return 404 not found.
+    else {
+      console.log(data.rows);
+    }
+  });
 
 new Router(app, pool);
 
-app.listen(port, () => console.log('Server Started...(Port:'+port+')'));
+app.listen(port, () => console.log('Server Started...(Port: '+port+')'));
