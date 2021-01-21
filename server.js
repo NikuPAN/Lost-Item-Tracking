@@ -13,12 +13,21 @@ const port = 5000;
 app.use(fileUpload());
 
 // Database
-const db = mysql.createConnection({
-    host: 'socif-eta-db-master.eastasia.cloudapp.azure.com',
-    user: 'pt',
-    password: 'socif123',
-    database: 'Inf'
-});
+// const db = mysql.createConnection({
+//     host: 'socif-eta-db-master.eastasia.cloudapp.azure.com',
+//     user: 'pt',
+//     password: 'socif123',
+//     database: 'Inf'
+// });
+
+const Pool = require('pg').Pool
+const pool = new Pool({
+  user: 'pt',
+  host: 'socif-eta-db-master.eastasia.cloudapp.azure.com',
+  database: 'Inf',
+  password: 'socif123',
+  port: 5432,
+})
 
 // db.connect(function(err) {
 //     if(err) {
@@ -45,6 +54,6 @@ const db = mysql.createConnection({
 //     }
 // }));
 
-new Router(app, db);
+new Router(app, pool);
 
 app.listen(port, () => console.log('Server Started...(Port:'+port+')'));
