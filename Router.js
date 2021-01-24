@@ -27,25 +27,51 @@ class Router {
       this.deleteReport(app, db);
   }
 
+  // check acceptable file type;
+  checkFileType(type) {
+    const acceptFileTypes = ['image/jpeg', 'image/png', 'image/svg'];
+    for (var i = 0; i < acceptFileTypes.length; i++) {
+      if(type === acceptFileTypes) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   // Upload Endpoint
   upload(app, db) {
     
     app.post('/upload', (req, res) => {
       if (req.files === null) {
           return res.status(400).json({
-              msg: 'No file was uploaded'
+            success: false,
+            msg: 'No file was uploaded'
           });
       }
 
       const file = req.files.file;
 
+      // console.log(file);
+      // Reject file type not equal to specfic type. Return 415
+      if(!checkFileType(file.mimetype)) {
+        return res.status(415).json({
+          success: false,
+          msg: 'File type not accepted'
+        });
+      }
+
+      // Kind of moving the file to server directory.
       file.mv(`${__dirname}/client/public/uploads/${file.name}`, err => {
           if(err) {
               console.error(err);
               return res.status(500).send(err);
           }
-
-          res.json({ fileName: file.name, filePath: `/uploads/${file.name}` });
+          
+          res.status(200).json({
+            success: true,
+            fileName: file.name, 
+            filePath: `/uploads/${file.name}` 
+          });
       });
     });
   }
@@ -57,22 +83,24 @@ class Router {
         // If an error occured.
         if(err) {
           res.status(err.status).json({
-              msg: 'An error occured, please try again'
+            success: false,
+            msg: 'An error occured, please try again'
           });
           return;
         }
         // If any record is found on the databse.
         if(data && data.rows.length > 0) { 
           res.status(200).json({
-              // Returns whole data object in row.
-              data: data.rows
+              success: true,
+              data: data.rows // Returns whole data object in row.
           });
           return true;
         }
         // No record is found on the database. return 404 not found.
         else {
           res.status(404).json({
-              msg: 'Nothing found on the db.'
+            success: false,
+            msg: 'Nothing found on the db.'
           });
         }
       });
@@ -87,25 +115,28 @@ class Router {
         // If an error occured.
         if(err) {
           res.status(err.status).json({
-              msg: 'An error occured, please try again'
+            success: false,
+            msg: 'An error occured, please try again'
           });
           return;
         }
         // If a record is found on the databse with the id. Return 200
         if(data && data.rows.length === 1) { 
           res.status(200).json({
-              id: data.rows[0].id,
-              option: data.rows[0].option,
-              timestamp: data.rows[0].timestamp,
-              description: data.rows[0].description,
-              contact: data.rows[0].contact
+            success: true,
+            id: data.rows[0].id,
+            option: data.rows[0].option,
+            timestamp: data.rows[0].timestamp,
+            description: data.rows[0].description,
+            contact: data.rows[0].contact
           });
           return true;
         }
         // No record is found with the id. Return 404
         else {
           res.status(404).json({
-              msg: `Nothing found with the id: ${id}.`
+            success: false,
+            msg: `Nothing found with the id: ${id}.`
           });
         }
       });
@@ -125,12 +156,14 @@ class Router {
         // If an error occured.
         if(err) {
           res.status(err.status).json({
-              msg: 'An error occured, please try again'
+            success: false,
+            msg: 'An error occured, please try again'
           });
           return;
         }
         // If there is no error. Return 200 OK.
         res.status(200).json({
+          success: true,
           id: data.insertId,
           msg: `User added with ID: ${data.insertId}`
         });
@@ -152,12 +185,14 @@ class Router {
         // If an error occured. Return error with code
         if(err) {
           res.status(err.status).json({
-              msg: 'An error occured, please try again'
+            success: false,
+            msg: 'An error occured, please try again'
           });
           return;
         }
         // If there is no error. Return 200 OK.
         res.status(200).json({
+          success: true,
           msg: `User modified with ID: ${id}`
         });
       });
@@ -172,12 +207,14 @@ class Router {
         // If there is an error.
         if(err) {
           res.status(err.status).json({
-              msg: 'An error occured, please try again'
+            success: false,
+            msg: 'An error occured, please try again'
           })
           return;
         }
         // If there is no error. Return 200 OK.
         res.status(200).json({
+          success: true,
           msg: `User deleted with ID: ${id}`
         });
       });
