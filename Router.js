@@ -19,12 +19,12 @@
 class Router {
 
   constructor(app, db) {
-      this.upload(app, db);
-      this.findAllReport(app, db);
-      this.findReport(app, db);
-      this.addReport(app, db);
-      this.editReport(app, db);
-      this.deleteReport(app, db);
+    this.upload(app, db);
+    this.findAllReport(app, db);
+    this.findReport(app, db);
+    this.addReport(app, db);
+    this.editReport(app, db);
+    this.deleteReport(app, db);
   }
 
   // check acceptable file type;
@@ -52,9 +52,9 @@ class Router {
       const file = req.files.file;
 
       // console.log(file);
-      // Reject file type not equal to specfic type. Return 415
-      if(!checkFileType(file.mimetype)) {
-        return res.status(415).json({
+      // Reject file type not equal to specfic type. Return unsuccessful
+      if(!this.checkFileType(file.mimetype)) {
+        return res.status(400).json({
           success: false,
           msg: 'File type not accepted'
         });
@@ -165,7 +165,7 @@ class Router {
         res.status(200).json({
           success: true,
           id: data.insertId,
-          msg: `User added with ID: ${data.insertId}`
+          msg: `Report added with ID: ${data.insertId}`
         });
       });
     });

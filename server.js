@@ -30,20 +30,20 @@ const pool = new Pool({
 });
 
 // Test connection
-pool.query('SELECT * FROM item_record ORDER BY id ASC', (err, data) => {
-  // If an error occured.
-  if(err) {
-    throw err;
-  }
-  // If any record is found on the databse.
-  if(data && data.rows.length > 0) { 
-    console.log(data.rows);
-  }
-  // No record is found on the database. return 404 not found.
-  else {
-    console.log("Nothing found on server.");
-  }
-});
+// pool.query('SELECT * FROM item_record ORDER BY id ASC', (err, data) => {
+//   // If an error occured.
+//   if(err) {
+//     throw err;
+//   }
+//   // If any record is found on the databse.
+//   if(data && data.rows.length > 0) { 
+//     console.log(data.rows);
+//   }
+//   // No record is found on the database. return 404 not found.
+//   else {
+//     console.log("Nothing found on server.");
+//   }
+// });
 
 new Router(app, pool);
 
