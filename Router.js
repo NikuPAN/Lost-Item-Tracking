@@ -28,15 +28,15 @@ class Router {
   }
 
   // check acceptable file type;
-  checkFileType(type) {
-    const acceptFileTypes = ['image/jpeg', 'image/png', 'image/svg'];
-    for (var i = 0; i < acceptFileTypes.length; i++) {
-      if(type === acceptFileTypes) {
-        return true;
-      }
-    }
-    return false;
-  }
+  // checkFileType(type) {
+  //   const acceptFileTypes = ['image/jpeg', 'image/png', 'image/svg'];
+  //   for (var i = 0; i < acceptFileTypes.length; i++) {
+  //     if(type === acceptFileTypes) {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
 
   // Upload Endpoint
   upload(app, db) {
@@ -52,13 +52,13 @@ class Router {
       const file = req.files.file;
 
       // console.log(file);
-      // Reject file type not equal to specfic type. Return unsuccessful
-      if(!this.checkFileType(file.mimetype)) {
-        return res.status(400).json({
-          success: false,
-          msg: 'File type not accepted'
-        });
-      }
+      // // Reject file type not equal to specfic type. Return unsuccessful
+      // if(!this.checkFileType(file.mimetype)) {
+      //   return res.status(400).json({
+      //     success: false,
+      //     msg: 'File type not accepted'
+      //   });
+      // }
 
       // Kind of moving the file to server directory.
       file.mv(`${__dirname}/client/public/uploads/${file.name}`, err => {
@@ -67,78 +67,11 @@ class Router {
               return res.status(500).send(err);
           }
           
-          res.status(200).json({
+          res.json({
             success: true,
             fileName: file.name, 
             filePath: `/uploads/${file.name}` 
           });
-      });
-    });
-  }
-
-  // Fetch exist reports from DB.
-  findAllReport(app, db) {
-    app.post('/findAllReport', (req, res) => {
-      db.query('SELECT * FROM item_record ORDER BY id ASC', (err, data) => {
-        // If an error occured.
-        if(err) {
-          res.status(err.status).json({
-            success: false,
-            msg: 'An error occured, please try again'
-          });
-          return;
-        }
-        // If any record is found on the databse.
-        if(data && data.rows.length > 0) { 
-          res.status(200).json({
-              success: true,
-              data: data.rows // Returns whole data object in row.
-          });
-          return true;
-        }
-        // No record is found on the database. return 404 not found.
-        else {
-          res.status(404).json({
-            success: false,
-            msg: 'Nothing found on the db.'
-          });
-        }
-      });
-    });
-  }
-
-  // Fetch an exist reports from DB with id.
-  findReport(app, db) {
-    app.post('/findReport', (req, res) => {
-      let id = req.body.id;
-      db.query('SELECT * FROM item_record WHERE id = $1 LIMIT 1', [id], (err, data) => {
-        // If an error occured.
-        if(err) {
-          res.status(err.status).json({
-            success: false,
-            msg: 'An error occured, please try again'
-          });
-          return;
-        }
-        // If a record is found on the databse with the id. Return 200
-        if(data && data.rows.length === 1) { 
-          res.status(200).json({
-            success: true,
-            id: data.rows[0].id,
-            option: data.rows[0].option,
-            timestamp: data.rows[0].timestamp,
-            description: data.rows[0].description,
-            contact: data.rows[0].contact
-          });
-          return true;
-        }
-        // No record is found with the id. Return 404
-        else {
-          res.status(404).json({
-            success: false,
-            msg: `Nothing found with the id: ${id}.`
-          });
-        }
       });
     });
   }
@@ -161,12 +94,79 @@ class Router {
           });
           return;
         }
-        // If there is no error. Return 200 OK.
-        res.status(200).json({
+        // If there is no error. Return success.
+        res.json({
           success: true,
           id: data.insertId,
           msg: `Report added with ID: ${data.insertId}`
         });
+      });
+    });
+  }
+  
+  // Fetch exist reports from DB.
+  findAllReport(app, db) {
+    app.post('/findAllReport', (req, res) => {
+      db.query('SELECT * FROM item_record ORDER BY id ASC', (err, data) => {
+        // If an error occured.
+        if(err) {
+          res.status(err.status).json({
+            success: false,
+            msg: 'An error occured, please try again'
+          });
+          return;
+        }
+        // If any record is found on the databse. Return Data & success.
+        if(data && data.rows.length > 0) { 
+          res.json({
+              success: true,
+              data: data.rows // Returns whole data object in row.
+          });
+          return true;
+        }
+        // No record is found on the database. return uncussess.
+        else {
+          res.json({
+            success: false,
+            msg: 'Nothing found on the db.'
+          });
+        }
+      });
+    });
+  }
+
+  // Fetch an exist reports from DB with id.
+  findReport(app, db) {
+    app.post('/findReport', (req, res) => {
+      let id = req.body.id;
+      db.query('SELECT * FROM item_record WHERE id = $1 LIMIT 1', [id], (err, data) => {
+        // If an error occured.
+        if(err) {
+          res.status(err.status).json({
+            success: false,
+            msg: 'An error occured, please try again'
+          });
+          return;
+        }
+        // If a record is found on the databse with the id. Return success.
+        if(data && data.rows.length === 1) { 
+          res.json({
+            success: true,
+            id: data.rows[0].id,
+            option: data.rows[0].option,
+            timestamp: data.rows[0].timestamp,
+            description: data.rows[0].description,
+            contact: data.rows[0].contact
+          });
+          return true;
+        }
+        // No record is found with the id. Return unsuccess.
+        else {
+          res.json({
+            success: false,
+            msg: `Nothing found with the id: ${id}.`
+          });
+        }
       });
     });
   }
@@ -190,8 +190,8 @@ class Router {
           });
           return;
         }
-        // If there is no error. Return 200 OK.
-        res.status(200).json({
+        // If there is no error. Return success.
+        res.json({
           success: true,
           msg: `User modified with ID: ${id}`
         });
@@ -212,8 +212,8 @@ class Router {
           })
           return;
         }
-        // If there is no error. Return 200 OK.
-        res.status(200).json({
+        // If there is no error. Return success.
+        res.json({
           success: true,
           msg: `User deleted with ID: ${id}`
         });

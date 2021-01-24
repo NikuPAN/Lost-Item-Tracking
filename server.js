@@ -3,14 +3,13 @@ const fileUpload = require('express-fileupload');
 const bodyParser = require('body-parser')
 const app = express();
 // const path = require('path');
-// const mysql = require('mysql');
-// const session = require('express-session');
-// const MySQLStore = require('express-mysql-session')(session);
 
 // Router.js is the endpoint API with every backend functions.
 const Router = require('./Router');
 const port = 5000;
 
+// app.use(express.static(path.join(__dirname, 'client', 'public')));
+// app.use(express.json());
 app.use(fileUpload());
 app.use(bodyParser.json())
 app.use(
@@ -18,6 +17,17 @@ app.use(
     extended: true,
   })
 )
+
+// app.get('/', (req, res) => {
+//   res.json({ info: 'Node.js, Express, and Postgres API' })
+// });
+
+// app.post('/upload', Router.upload);
+// app.post('/addReport', Router.addReport);
+// app.get('/findAllReport', Router.findAllReport);
+// app.get('/findReport/:id', Router.findReport);
+// app.put('/editReport/:id', Router.editReport);
+// app.delete('/deleteReport/:id', Router.deleteReport);
 
 // Database
 const Pool = require('pg').Pool
@@ -46,5 +56,9 @@ const pool = new Pool({
 // });
 
 new Router(app, pool);
+
+// app.get('/', function(req, res) {
+//   res.sendFile(path.join(__dirname, 'client', 'public', 'index.html'))
+// });
 
 app.listen(port, () => console.log('Server Started...(Port: '+port+')'));

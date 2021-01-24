@@ -65,6 +65,7 @@ const ReportForm = () => {
     if(contactWay === '' || contactWay === null) {
       return;
 		}
+		console.log('uploadDetail is called.');
 		
 		// convert text to int before upload to db.
 		let opt = (option === '拾獲') ? 1 : 0;
@@ -110,6 +111,7 @@ const ReportForm = () => {
 		// Upload Detail to database & Assign File ID.
 		let fID = doUploadDetail();
 		// Detail is uploaded to db successfully.
+		console.log(fID);
 		if(fID !== -1) {
 			const formData = new FormData();
 			formData.append('file', file);
@@ -129,8 +131,7 @@ const ReportForm = () => {
 				});
 				console.log(res.data);
 				const { fileName, filePath } = res.data;
-				let opt = option, dt = dateTime, phde = photoDesc, cw = contactWay;
-				setUploadedFile({ fileName, filePath, opt, dt, phde, cw });
+				setUploadedFile({ fileName, filePath });
 				// console.log(uploadedFile);
 				setMessage('File Uploaded!');
 			}
