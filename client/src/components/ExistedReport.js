@@ -6,26 +6,39 @@ const ExistedReport = () => {
 
   const [images, setImages] = useState([]);
 
-  async function getAllReport() {
-		let response = await fetch("https://cronpublic.yasushi.me/record.json");
-		let data = await response.json();
-		// console.log(data);
-		return data;
+  const getAllReportFromDB = async() => {
+    let response = await fetch('/findAllReport', {
+      method: 'post',
+      headers: {
+        'Accept':'application/json',
+        'Content-Type':'application/json'
+      }
+    });
+
+    let data = await response.json();
+    console.log("From Existed Report.js...");
+    console.log(data);
+    return data;
+  }
+
+  const updateAllReport = () => {
+    getAllReportFromDB();
+      // .then(res =>
+      //   res.map(report => {
+      //       return {
+      //         id: report.id,
+      //         option: report.option,
+      //         timestamp: report.timestamp,
+      //         description: report.description,
+      //         contact: report.contact
+      //       };
+      //   })
+      // )
+      // .then(infos => setImages(infos));
   }
   
 	useEffect(() => {
-    fetch('http://131.181.190.87:3001/all')
-        .then(res => res.json())
-        .then(data =>
-        data.map(stock => {
-      return {
-        symbol: stock.symbol,
-        name: stock.name,
-        industry: stock.industry
-      };
-        })
-      )
-      .then(stocks => setRowData(stocks));
+    updateAllReport();
 }, []);
 
   return (
