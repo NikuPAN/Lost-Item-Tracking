@@ -13,12 +13,13 @@ const ExistedReport = () => {
 
   return (
     <div className="container">
+      
       {images.map(img => (
         <div className="box">
           
         </div>
       ))}
-      
+
     </div>
   )
 }
