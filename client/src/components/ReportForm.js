@@ -1,8 +1,9 @@
 import React, { Fragment, useState } from 'react';
-import DateTimePicker from 'react-datetime-picker';
+// import DateTimePicker from 'react-datetime-picker';
 import { TextArea } from '@adobe/react-spectrum';
 import Message from './Message';
 import Progress from './Progress';
+import DateTime from './DateTime';
 import axios from 'axios';
 
 const ReportForm = () => {
@@ -157,9 +158,10 @@ const ReportForm = () => {
 					<input type='radio' value='拾獲' name='gender' checked={option === '拾獲'}/> 拾獲&nbsp;&nbsp;
 					<input type='radio' value='遺失' name='gender' checked={option === '遺失'}/> 遺失&nbsp;&nbsp;
 				</div>
+				<br/>
 				<div className="multiline mb-4">
 					<div className="col-mb-4 ">{option}時間:</div>
-      			<DateTimePicker	onChange={onChangeDateTime} value={dateTime} />
+      			<DateTime	onChange={onChangeDateTime} option={option} />
     		</div>
 				<div>
 					<TextArea

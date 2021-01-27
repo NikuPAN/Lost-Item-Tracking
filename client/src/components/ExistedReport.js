@@ -16,7 +16,7 @@ const ExistedReport = () => {
 
     let data = await response.json();
     if(data && data.success === true) {
-      console.log("From Existed Report.js...");
+      // console.log("From Existed Report.js...");
       console.log(data.data);
       return data.data;
     }
@@ -46,7 +46,7 @@ const ExistedReport = () => {
   return (
     <div className="container">
 
-      {images.map(img => (
+      {reports.map(img => (
         <div className="box">
           
         </div>

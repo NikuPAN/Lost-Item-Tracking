@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "@adobe/react-spectrum": "^3.7.0",
+    "@material-ui/core": "^4.11.3",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.0",
     "express-mysql-session": "^2.1.5",
