@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { render } from 'react-dom';
-import Gallery from 'react-grid-gallery';
 
 const ExistedReport = () => {
 
   const [images, setImages] = useState([]);
+  const [reports, setReports] = useState([]);
 
   const getAllReportFromDB = async() => {
     let response = await fetch('/findAllReport', {
@@ -16,30 +15,33 @@ const ExistedReport = () => {
     });
 
     let data = await response.json();
-    console.log("From Existed Report.js...");
-    console.log(data);
-    return data;
+    if(data && data.success === true) {
+      console.log("From Existed Report.js...");
+      console.log(data.data);
+      return data.data;
+    }
+    return null;
   }
 
   const updateAllReport = () => {
-    getAllReportFromDB();
-      // .then(res =>
-      //   res.map(report => {
-      //       return {
-      //         id: report.id,
-      //         option: report.option,
-      //         timestamp: report.timestamp,
-      //         description: report.description,
-      //         contact: report.contact
-      //       };
-      //   })
-      // )
-      // .then(infos => setImages(infos));
+    getAllReportFromDB()
+      .then(res =>
+        res.map(report => {
+            return {
+              id: report.id,
+              option: report.option,
+              timestamp: report.timestamp,
+              description: report.description,
+              contact: report.contact
+            };
+        })
+      )
+      .then(infos => setReports(infos));
   }
   
-	useEffect(() => {
+  useEffect(() => {
     updateAllReport();
-}, []);
+  }, []);
 
   return (
     <div className="container">

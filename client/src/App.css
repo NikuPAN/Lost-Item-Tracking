@@ -8,3 +8,11 @@
   //font-size: calc(10px + 2vmin);
   color: white;
 } */
+
+body {
+  margin : 0;
+  padding: 0;
+  background: #262626;
+  font-family: sans-serif;
+  color: #ffffff;
+}
