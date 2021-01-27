@@ -1,14 +1,6 @@
-/* .container {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-  justify-content: top;
-  //font-size: calc(10px + 2vmin);
-  color: white;
-} */
-
+/*
+  Apply App styles in here.
+*/
 body {
   margin : 0;
   padding: 0;

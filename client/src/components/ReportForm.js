@@ -13,7 +13,7 @@ const ReportForm = () => {
 	// File Name
 	const [fileName, setFileName] = useState('請選擇要上傳的照片');
 	// Photo Description
-	const [photoDesc, setPhotoDesc] = useState('一個錢包...');
+	const [photoDesc, setPhotoDesc] = useState('本人於今天早上9時遺失一個錢包...');
 	// The way to contact
 	const [contactWay, setContactWay] = useState('12345678/abc@example.com...');
 	// Is it found or lost item? 0 = lost, 1 = found
@@ -54,7 +54,7 @@ const ReportForm = () => {
 	const resetForm = () => {
 		setFile('');
 		setFileName('請選擇要上傳的照片');
-		setPhotoDesc('一個錢包...');
+		setPhotoDesc('本人於今天早上9時遺失一個錢包...');
 		setContactWay('12345678/abc@example.com...');
 		setOption('拾獲');
 	}
@@ -166,7 +166,7 @@ const ReportForm = () => {
 				<div>
 					<TextArea
 						id='description'
-						label='請形容這個物品:'
+						label='請形容事件經過:'
 						isRequired 
 						necessityIndicator='label'
 						placeholder={photoDesc}

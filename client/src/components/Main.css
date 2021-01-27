@@ -1,0 +1,69 @@
+/*
+  Apply Main Page styles in here.
+*/
+.report .container {
+  width: 100%;
+  min-height: 300px;
+  /* background: #fff; */
+  margin: 30px auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.report .container .box {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  background: #ff0;
+  margin: 10px;
+  box-sizing: border-box;
+  display: inline-block;
+  border-radius: 10px;
+}
+
+.report .container .box .imgBox {
+  position: relative;
+}
+
+.report .container .box .imgBox img {
+  max-width: 100%;
+  /* position: relative; */
+  transition: transform 2s;
+}
+
+.report .container .box:hover .imgBox img {
+  transform: scale(1.2);
+}
+
+.report .container .box .details {
+  position: absolute;
+  top: 50%;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  background: rgba(0, 0, 0, .8);
+  border-radius: 0px 0px 10px 10px;
+  /* transform: scaleY(0);
+  transition: transform .5s; */
+}
+
+/* .report .container .box:hover .details {
+  transform: scaleY(1);
+} */
+
+.report .container .box .details .content {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  /* text-align: center; */
+}
+
+.report .container .box .details .content h5[data-status="0"] {
+  color: #f00;
+}
+
+.report .container .box .details .content h5[data-status="1"] {
+  color: rgb(0, 110, 255);
+}
