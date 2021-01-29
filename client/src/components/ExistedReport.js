@@ -1,9 +1,11 @@
-import { red } from '@material-ui/core/colors';
 import React, { useState, useEffect } from 'react';
+import dinner from './dinner.png';
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
 
 const ExistedReport = () => {
 
-  const [images, setImages] = useState([]);
+  // const [images, setImages] = useState([]);
   const [reports, setReports] = useState([]);
 
   const getAllReportFromDB = async() => {
@@ -61,12 +63,24 @@ const ExistedReport = () => {
     return STDTime;
   }
 
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      '& > *': {
+        margin: theme.spacing(1),
+      },
+    },
+  }));
+
+  const classes = useStyles();
+
   return (
     <div className="container">
       {reports.map(img => (
         <div className="box">
           <div className="imgBox">
-            <img src="./dinner2.jpg" alt=""></img>
+            <img src={dinner} alt=""></img>
+            <Button variant="contained" color="primary" value="更新" id={img.id}>更新</Button>
+            <Button variant="contained" color="secondary" value="刪除" id={img.id}>刪除</Button>
           </div>
           <div className="details">
             <div className="content">

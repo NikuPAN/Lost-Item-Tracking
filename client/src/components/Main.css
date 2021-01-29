@@ -15,7 +15,7 @@
   position: relative;
   width: 250px;
   height: 250px;
-  background: #ff0;
+  /* background: #ff0; */
   margin: 10px;
   box-sizing: border-box;
   display: inline-block;
@@ -27,13 +27,37 @@
 }
 
 .report .container .box .imgBox img {
+  border-radius: 10px;
   max-width: 100%;
+  width: 100%;
   /* position: relative; */
   transition: transform 2s;
 }
 
 .report .container .box:hover .imgBox img {
-  transform: scale(1.2);
+  transform: scale(1.1);
+}
+
+.report .container .box .imgBox button {
+  position: absolute;
+  transform: scale(0);
+  transition: transform .1s;
+}
+
+.report .container .box:hover .imgBox button {
+  position: absolute;
+  transform: scale(1);
+  transition: transform .1s;
+}
+
+.report .container .box .imgBox button[value="更新"] {
+  top: 5px;
+  right: 75px;
+}
+
+.report .container .box .imgBox button[value="刪除"] {
+  top: 5px;
+  right: 5px;
 }
 
 .report .container .box .details {
@@ -44,13 +68,14 @@
   right: 0px;
   background: rgba(0, 0, 0, .8);
   border-radius: 0px 0px 10px 10px;
-  /* transform: scaleY(0);
-  transition: transform .5s; */
+  /* transform: scaleY(0); */
+  transition: transform 2s;
 }
 
-/* .report .container .box:hover .details {
-  transform: scaleY(1);
-} */
+.report .container .box:hover .details {
+  /* transform: scaleY(1); */
+  transform: scale(1.1);
+}
 
 .report .container .box .details .content {
   position: absolute;
