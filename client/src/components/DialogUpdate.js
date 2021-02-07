@@ -58,8 +58,8 @@ const DialogUpdate = props => {
 
 	const resetForm = () => {
 		setOption(props.option);
-		setPhotoDesc('例: 本人於今天早上9時遺失一個錢包...');
-		setContactWay('12345678/abc@example.com...');
+		setPhotoDesc(props.desc);
+		setContactWay(props.contact);
 		
   }
 
