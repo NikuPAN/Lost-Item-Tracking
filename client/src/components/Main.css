@@ -1,6 +1,11 @@
 /*
   Apply Main Page styles in here.
 */
+
+.form Button {
+  width: 10%;
+}
+
 .report .container {
   width: 100%;
   min-height: 300px;
@@ -30,8 +35,7 @@
   border-radius: 10px;
   max-width: 100%;
   width: 100%;
-  /* position: relative; */
-  transition: transform 2s;
+  transition: transform 1s;
 }
 
 .report .container .box:hover .imgBox img {
@@ -50,12 +54,12 @@
   transition: transform .1s;
 }
 
-.report .container .box .imgBox button[value="更新"] {
+.report .container .box .imgBox button[value="Update"] {
   top: 5px;
   right: 75px;
 }
 
-.report .container .box .imgBox button[value="刪除"] {
+.report .container .box .imgBox button[value="Delete"] {
   top: 5px;
   right: 5px;
 }
@@ -69,7 +73,7 @@
   background: rgba(0, 0, 0, .8);
   border-radius: 0px 0px 10px 10px;
   /* transform: scaleY(0); */
-  transition: transform 2s;
+  transition: transform 1s;
 }
 
 .report .container .box:hover .details {

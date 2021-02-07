@@ -4,14 +4,13 @@ import TextField from '@material-ui/core/TextField';
 
 export default function DateTime(props) {
 
-  const fullDate = new Date()
+  const fullDate = (props.dateTime?new Date(props.dateTime) : new Date());
   const formatted_date = (fullDate.getFullYear()
     + "-" + (fullDate.getMonth()<10?"0"+(fullDate.getMonth() + 1):fullDate.getMonth())
     + "-" + (fullDate.getDate()<10?"0"+fullDate.getDate():fullDate.getDate()) 
     + "T" 
     + (fullDate.getHours()<10?"0"+fullDate.getHours():fullDate.getHours())
     + ":" + (fullDate.getMinutes()<10?"0"+fullDate.getMinutes():fullDate.getMinutes())
-    + ":" + (fullDate.getSeconds()<10?"0"+fullDate.getSeconds():fullDate.getSeconds())
     );
   const [ dateTime, setDateTime ] = useState(formatted_date);
   // const [ label ] = useState(`${props.option} 時間`)
@@ -29,9 +28,7 @@ export default function DateTime(props) {
     textField: {
       // marginLeft: theme.spacing(1),
       marginRight: theme.spacing(1),
-      width: 250, 
-      color: 'white',
-      fontWeight: 'bold',
+      width: 220, 
       background: 'white',
     },
   }));
@@ -42,6 +39,7 @@ export default function DateTime(props) {
     <TextField
       id="datetime"
       //label={label}
+      style={{ borderRadius: "5px", textAlign: "center" }}
       type="datetime-local"
       defaultValue={dateTime}
       onChange={onChangeDateTime}
@@ -49,6 +47,7 @@ export default function DateTime(props) {
       InputLabelProps={{
         shrink: true,
       }}
+      variant="outlined"
     />
   </form>
   )

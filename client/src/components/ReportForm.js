@@ -1,9 +1,9 @@
 import React, { Fragment, useState } from 'react';
-// import DateTimePicker from 'react-datetime-picker';
-import { TextArea } from '@adobe/react-spectrum';
 import Message from './Message';
 import Progress from './Progress';
 import DateTime from './DateTime';
+import Description from './Description';
+import ContactWay from './ContactWay';
 import axios from 'axios';
 
 const ReportForm = () => {
@@ -13,7 +13,7 @@ const ReportForm = () => {
 	// File Name
 	const [fileName, setFileName] = useState('請選擇要上傳的照片');
 	// Photo Description
-	const [photoDesc, setPhotoDesc] = useState('本人於今天早上9時遺失一個錢包...');
+	const [photoDesc, setPhotoDesc] = useState('例: 本人於今天早上9時遺失一個錢包...');
 	// The way to contact
 	const [contactWay, setContactWay] = useState('12345678/abc@example.com...');
 	// Is it found or lost item? 0 = lost, 1 = found
@@ -34,7 +34,6 @@ const ReportForm = () => {
 	}
 
 	const onChangePhotoDesc = (e) => {
-		//setPhotoDesc(e.target.value);
 		setPhotoDesc(e);
 	}
 
@@ -48,13 +47,12 @@ const ReportForm = () => {
 
 	const onChangeDateTime = (e) => {
 		setDateTime(e);
-		console.log(e);
 	}
 
 	const resetForm = () => {
 		setFile('');
 		setFileName('請選擇要上傳的照片');
-		setPhotoDesc('本人於今天早上9時遺失一個錢包...');
+		setPhotoDesc('例: 本人於今天早上9時遺失一個錢包...');
 		setContactWay('12345678/abc@example.com...');
 		setOption('拾獲');
 	}
@@ -155,40 +153,24 @@ const ReportForm = () => {
 			{ message? <Message msg={message} /> : null }
 			<form onSubmit={onSubmitForm}>
 				<div onChange={onChangeOption}>
-					<input type='radio' value='拾獲' name='gender' checked={option === '拾獲'}/> 拾獲&nbsp;&nbsp;
-					<input type='radio' value='遺失' name='gender' checked={option === '遺失'}/> 遺失&nbsp;&nbsp;
+					<label>請選擇回報類型:&nbsp;</label>
+					<input type='radio' value='拾獲' checked={option === '拾獲'}/> 拾獲&nbsp;&nbsp;
+					<input type='radio' value='遺失' checked={option === '遺失'}/> 遺失&nbsp;&nbsp;
+					
 				</div>
-				<br/>
 				<div className="multiline mb-4">
-					<div className="col-mb-4 ">{option}時間:</div>
+					<div className="col-mb-4">{option}時間:</div>
       			<DateTime	onChange={onChangeDateTime} option={option} />
     		</div>
 				<div>
-					<TextArea
-						id='description'
-						label='請形容事件經過:'
-						isRequired 
-						necessityIndicator='label'
-						placeholder={photoDesc}
-						onChange={onChangePhotoDesc}
-						maxLength='500'
-						width='100%'
-						height='static-size-200'
-						maxWidth='100%'
-					/>
+					<Description description={photoDesc} 
+						onChange={onChangePhotoDesc}/>
 				</div>
 				<br/>
 				<div>
-					<TextArea
-						id='contact'
-						label='請留下聯絡方式:'
-						isRequired 
-						necessityIndicator='label'
-						placeholder={contactWay}
+					<ContactWay 
+						contact={contactWay}
 						onChange={onChangeContactWay}
-						maxLength='500'
-						width='100%'
-						maxWidth='100%'
 					/>
 				</div>
 				<br/>
