@@ -75,7 +75,7 @@ const ReportForm = () => {
 		let fileID = -1;
 
     try {
-      let res = await fetch('/addReport', {
+      let response = await fetch('/api/addReport', {
         method: 'post',
         headers: {
           'Accept':'application/json',
@@ -89,9 +89,10 @@ const ReportForm = () => {
         })
       });
 
-      let result = await res.json();
+      let result = await response.json();
       if(result && result.success === true) {
 				fileID = result.id;
+				console.log(fileID);
       }
       else {
 				setMessage(result.msg);
@@ -115,7 +116,7 @@ const ReportForm = () => {
 			const formData = new FormData();
 			formData.append('file', file);
 			try {
-				const res = await axios.post('/upload', formData, {
+				const res = await axios.post('/api/upload', formData, {
 					headers: {
 						'Content-Type': 'multiport/form-data'
 					},

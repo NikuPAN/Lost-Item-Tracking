@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import dinner from './dinner.png';
 import DialogUpdate from './DialogUpdate';
 import DialogDelete from './DialogDelete';
@@ -9,7 +9,7 @@ const ExistedReport = () => {
   const [reports, setReports] = useState([]);
 
   const getAllReportFromDB = async() => {
-    let response = await fetch('/findAllReport', {
+    let response = await fetch('/api/findAllReport', {
       method: 'post',
       headers: {
         'Accept':'application/json',
@@ -20,21 +20,41 @@ const ExistedReport = () => {
     let data = await response.json();
     if(data && data.success === true) {
       // console.log("From Existed Report.js...");
-      // console.log(data.data);
       return data.data;
+    }
+    return null;
+  }
+
+  const deleteReportFromDB = async(id) => {
+    let response = await fetch('/api/deleteReport', {
+      method: 'post',
+      headers: {
+        'Accept':'application/json',
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify({
+        id: id
+      })
+    });
+
+    let data = await response.json();
+    if(data && data.success === true) {
+      console.log(data.msg);
     }
     return null;
   }
 
   const onUpdateReport = (e) => {
     console.log("Updated Report ID: " + e);
+
   }
 
   const onDeleteReport = (e) => {
-    console.log("Deleted Report ID: " + e);
+    // console.log("Deleted Report ID: " + e);
+    deleteReportFromDB(e);
   }
 
-  const updateAllReport = () => {
+  const updateAllReport = useCallback(() => {
     getAllReportFromDB()
       .then(res =>
         res.map(report => {
@@ -48,11 +68,11 @@ const ExistedReport = () => {
         })
       )
       .then(infos => setReports(infos));
-  }
+  }, []);
   
   useEffect(() => {
     updateAllReport();
-  }, [reports]);
+  }, [updateAllReport, reports]);
 
   const timestampToSTDTime = (timestamp) => {
 

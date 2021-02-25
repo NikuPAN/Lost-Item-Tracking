@@ -37,6 +37,7 @@ const DialogUpdate = props => {
 
   const handleDialogUpdate = (e) => {
     setOpenUpdateDialog(false);
+    doUpdateDetail(e.target.value);
     props.onUpdate();
   }
 
@@ -63,16 +64,20 @@ const DialogUpdate = props => {
 		
   }
 
-  const doUpdateDetail = async() => {
+  const doUpdateDetail = async(id) => {
     if(photoDesc === '' || photoDesc === null) {
+      // photo description must not be blank.
       return;
     }
     if(contactWay === '' || contactWay === null) {
+      // contact way must not be blank.
       return;
 		}
-		console.log('uploadDetail is called.');
+    // console.log('uploadDetail is called.');
+    
+    let reportID = id;
 		
-		// convert text to int before upload to db.
+    // convert text to int before upload to db.
 		let opt = (option === '拾獲') ? 1 : 0;
 
 		// convert date time to timestamp before upload to db.
@@ -81,13 +86,14 @@ const DialogUpdate = props => {
 		let fileID = -1;
 
     try {
-      let res = await fetch('/editReport', {
+      let res = await fetch('/api/updateReport', {
         method: 'post',
         headers: {
           'Accept':'application/json',
           'Content-Type':'application/json'
         },
         body: JSON.stringify({
+          id: reportID,
 					option: opt,
       		timestamp: ts,
       		description: photoDesc,
@@ -96,6 +102,7 @@ const DialogUpdate = props => {
       });
 
       let result = await res.json();
+      // console.log(res);
       if(result && result.success === true) {
 				fileID = result.id;
       }

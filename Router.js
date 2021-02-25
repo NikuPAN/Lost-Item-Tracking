@@ -41,7 +41,7 @@ class Router {
   // Upload Endpoint
   upload(app, db) {
     
-    app.post('/upload', (req, res) => {
+    app.post('/api/upload', (req, res) => {
       if (req.files === null) {
           return res.status(400).json({
             success: false,
@@ -78,7 +78,7 @@ class Router {
 
   // Add new report to DB.
   addReport(app, db) {
-    app.post('/addReport', (req, res) => {
+    app.post('/api/addReport', (req, res) => {
       let option = req.body.option;
       let timestamp = req.body.timestamp;
       let description = req.body.description;
@@ -106,7 +106,7 @@ class Router {
   
   // Fetch exist reports from DB.
   findAllReport(app, db) {
-    app.post('/findAllReport', (req, res) => {
+    app.post('/api/findAllReport', (req, res) => {
       db.query('SELECT * FROM item_record ORDER BY id ASC', (err, data) => {
         // If an error occured.
         if(err) {
@@ -137,7 +137,7 @@ class Router {
 
   // Fetch an exist reports from DB with id.
   findReport(app, db) {
-    app.post('/findReport', (req, res) => {
+    app.post('/api/findReport', (req, res) => {
       let id = req.body.id;
       db.query('SELECT * FROM item_record WHERE id = $1 LIMIT 1', [id], (err, data) => {
         // If an error occured.
@@ -173,7 +173,7 @@ class Router {
 
   // Update exist report in DB.
   editReport(app, db) {
-    app.post('/editReport', (req, res) => {
+    app.post('/api/updateReport', (req, res) => {
       let id = req.body.id;
       let option = req.body.option;
       let timestamp = req.body.timestamp;
@@ -193,6 +193,7 @@ class Router {
         // If there is no error. Return success.
         res.json({
           success: true,
+          id: id,
           msg: `User modified with ID: ${id}`
         });
       });
@@ -201,7 +202,7 @@ class Router {
 
   // Delete exist report in DB.
   deleteReport(app, db) {
-    app.post('/deleteReport', (req, res) => {
+    app.post('/api/deleteReport', (req, res) => {
       let id = req.body.id;
       db.query('DELETE FROM item_record WHERE id = $1', [id], (err, data, field) => {
         // If there is an error.
@@ -215,7 +216,7 @@ class Router {
         // If there is no error. Return success.
         res.json({
           success: true,
-          msg: `User deleted with ID: ${id}`
+          msg: `Report deleted with ID: ${id}`
         });
       });
     });
