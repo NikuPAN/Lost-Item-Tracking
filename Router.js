@@ -23,7 +23,7 @@ class Router {
     this.findAllReport(app, db);
     this.findReport(app, db);
     this.addReport(app, db);
-    this.editReport(app, db);
+    this.updateReport(app, db);
     this.deleteReport(app, db);
   }
 
@@ -172,13 +172,13 @@ class Router {
   }
 
   // Update exist report in DB.
-  editReport(app, db) {
+  updateReport(app, db) {
     app.post('/api/updateReport', (req, res) => {
-      let id = req.body.id;
       let option = req.body.option;
       let timestamp = req.body.timestamp;
       let description = req.body.description;
       let contact = req.body.contact;
+      let id = req.body.id;
 
       db.query('UPDATE item_record SET (option = $1, timestamp = $2, description = $3, contact = $4) WHERE id = $5', 
       [option, timestamp, description, contact, id], (err, data, field) => {

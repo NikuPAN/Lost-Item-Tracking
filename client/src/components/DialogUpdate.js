@@ -11,7 +11,7 @@ import Description from './Description';
 import ContactWay from './ContactWay';
 
 
-const DialogUpdate = props => {
+const DialogUpdate = (props) => {
 
   // Opens Delete Confirmation Dialog
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
@@ -37,7 +37,8 @@ const DialogUpdate = props => {
 
   const handleDialogUpdate = (e) => {
     setOpenUpdateDialog(false);
-    doUpdateDetail(e.target.value);
+    // console.log(props.id);
+    doUpdateDetail(props.id);
     props.onUpdate();
   }
 
@@ -72,11 +73,8 @@ const DialogUpdate = props => {
     if(contactWay === '' || contactWay === null) {
       // contact way must not be blank.
       return;
-		}
-    // console.log('uploadDetail is called.');
-    
-    let reportID = id;
-		
+    }
+    console.log("Update Report is called. ID: "+id);
     // convert text to int before upload to db.
 		let opt = (option === '拾獲') ? 1 : 0;
 
@@ -93,16 +91,15 @@ const DialogUpdate = props => {
           'Content-Type':'application/json'
         },
         body: JSON.stringify({
-          id: reportID,
 					option: opt,
       		timestamp: ts,
       		description: photoDesc,
-      		contact: contactWay
+          contact: contactWay,
+          id: id
         })
       });
 
       let result = await res.json();
-      // console.log(res);
       if(result && result.success === true) {
 				fileID = result.id;
       }
